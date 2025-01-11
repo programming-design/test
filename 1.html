@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ذكاء اصطناعي إسلامي</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            width: 50%;
+            margin: 0 auto;
+        }
+        h1 {
+            color: #2D94B8;
+        }
+        input[type="text"] {
+            width: 80%;
+            padding: 10px;
+            font-size: 16px;
+            margin: 10px 0;
+        }
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #2D94B8;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #2196f3;
+        }
+        .answer {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+            background-color: #f2f2f2;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>أسئلة إسلامية - ذكاء اصطناعي</h1>
+        <p>اكتب سؤالك هنا وسوف تحصل على الإجابة</p>
+        <input type="text" id="userQuestion" placeholder="اكتب سؤالك هنا" />
+        <button onclick="getAnswer()">إجابة</button>
+        <div class="answer" id="answer"></div>
+    </div>
+
+    <script>
+        async function getAnswer() {
+            const userQuestion = document.getElementById('userQuestion').value.trim();
+            
+            if (userQuestion === "") {
+                document.getElementById('answer').textContent = "يرجى إدخال سؤالك أولاً.";
+                return;
+            }
+
+            document.getElementById('answer').textContent = "جاري تحميل الإجابة...";
+
+            // إرسال سؤال للموديل عبر API
+            try {
+                const response = await fetch('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', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ question: userQuestion }),
+                });
+
+                const data = await response.json();
+                document.getElementById('answer').textContent = data.answer || "لم أتمكن من العثور على إجابة لهذا السؤال.";
+            } catch (error) {
+                document.getElementById('answer').textContent = "حدث خطأ، يرجى المحاولة لاحقًا.";
+            }
+        }
+    </script>
+</body>
+</html>
